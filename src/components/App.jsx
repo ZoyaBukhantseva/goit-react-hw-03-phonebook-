@@ -48,6 +48,24 @@ class App extends Component {
       contacts: contacts.filter((contact) => contact.id !== id),
     });
   };
+
+  componentDidMount(){       
+    const LocalStoragePhonebook = localStorage.getItem('LocalPhonebook');
+    const LocalPhonebook = JSON.parse(LocalStoragePhonebook);
+
+    if (LocalPhonebook?.length) {
+        this.setState({contacts: LocalPhonebook});
+    }; 
+}
+
+componentDidUpdate (prevProps, prevState) {
+    const prevConatcts = prevState.contacts;
+    const currentContacts = this.state.contacts;
+
+    if (currentContacts !== prevConatcts) {
+        localStorage.setItem ('LocalPhonebook', JSON.stringify(currentContacts));
+    }
+}
   render() {
     const { filter } = this.state;
     const filteredContacts = this.filterContacts();
